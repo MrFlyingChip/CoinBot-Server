@@ -136,13 +136,15 @@ module.exports = function (app, db, upload) {
                         for (let i = 0; i < strategies.length; i++) {
                             let profit = 0;
                             let price = 0;
-                            let date = new Date(parts[0].date);
-                            date.setDate(new Date(parts[0].date).getDay() + parts[0].days);
+                            let date = (parts[0]) ? new Date(parts[0].date) : null;
+                            if(date){
+                                date.setDate(new Date(parts[0].date).getDay() + parts[0].days);
+                            }
                             let strategy = {
                                 id: strategies[i]._id,
                                 name: strategies[i].name,
                                 coin: strategies[i].coin,
-                                startDate: new Date(parts[0].date),
+                                startDate: (parts[0]) ? new Date(parts[0].date) : null,
                                 finishDate: date,
                                 profitParts: 0,
                                 minusParts: 0,
