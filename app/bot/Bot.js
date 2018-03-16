@@ -15,7 +15,7 @@ var parseDate = function (date) {
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
-    if (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
+    while (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
         let coin = parseExcelData[dataExcelCounter][1];
         let recommendedValue = parseExcelData[dataExcelCounter][2];
         let date = parseDate(parseExcelData[dataExcelCounter][0]);
@@ -45,27 +45,29 @@ function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, f
                     status: null
                 };
                 parts.push(deal);
-                createPart(parseExcelData, dealCounter + 1, dataExcelCounter + 1, partBudget, foundStrategy, db, parts);
+                dealCounter++;
+                dataExcelCounter++;
             } else {
-                createPart(parseExcelData, dealCounter, dataExcelCounter + 1, partBudget, foundStrategy, db, parts);
+                dataExcelCounter++;
             }
-        } catch(e){
+        } catch (e) {
             console.log(e);
-            createPart(parseExcelData, dealCounter, dataExcelCounter + 1, partBudget, foundStrategy, db, parts);
+            dataExcelCounter++;
         }
-    } else {
-        simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, foundStrategy);
     }
+    simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, foundStrategy);
+
 }
 
 function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, foundStrategy) {
     let incomeBTC = 0;
+    let allParts = [];
     for(let dealCounter = 0; dealCounter < parts.length; dealCounter++){
+        console.log(dealCounter);
+        console.log(parts[dealCounter]);
         let dateCounter = 0;
         let date = new Date(parts[dealCounter].date);
         date.setHours(new Date(parts[dealCounter].date).getHours() + dateCounter);
-        let coin = parts[dealCounter].coin;
-        console.log('Часть начинает симуляцию');
         while (parts[dealCounter].status !== 'Завершена' && date < new Date()) {
             date = date.toISOString();
             parts[dealCounter].days = (dateCounter % 24 === 0) ? parts[dealCounter].days + 1 : parts[dealCounter].days;
@@ -86,7 +88,6 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                 }
                 parts[dealCounter].currentPrice = currentPrice;
                 let coin = partBudget / parts[dealCounter].inputPrice;
-
                 res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/BTC/' + parts[dealCounter].coin + '?time=' + date, {
                     headers: {
                         'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
@@ -97,6 +98,8 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                     console.log(result.error);
                 } else {
                     rate = result.rate;
+                    console.log(dealCounter);
+                    console.log(parts[dealCounter]);
                     parts[dealCounter].incomeBTC = coin / rate - partBudget;
                     let income = parts[dealCounter].incomeBTC * 100 / partBudget;
                     parts[dealCounter].currentIncome = income;
@@ -116,7 +119,6 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                         if (parts[dealCounter].days <= foundStrategy.limitDays) {
                             if (percent >= foundStrategy.percentProfit) {
                                 parts[dealCounter].status = 'Завершена';
-                                dealCounter++;
                                 incomeBTC += parts[dealCounter].incomeBTC;
                                 while((incomeBTC - partBudget) > 0) {
                                     if (dataExcelCounter < parseExcelData.length) {
@@ -185,6 +187,23 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                                 }
                             }
                         }
+                        const deal = {
+                            strategy: parts[dealCounter].strategy,
+                            coin: parts[dealCounter].coin,
+                            date: parts[dealCounter].date,
+                            inputPrice: parts[dealCounter].inputPrice,
+                            budget: parts[dealCounter].budget,
+                            currentPrice: parts[dealCounter].currentPrice,
+                            maxPrice: parts[dealCounter].maxPrice,
+                            currentIncome: parts[dealCounter].currentIncome,
+                            incomeBTC: parts[dealCounter].incomeBTC,
+                            incomeDollars: parts[dealCounter].incomeDollars,
+                            days: parts[dealCounter].days,
+                            closedParts: parts[dealCounter].closedParts,
+                            status: parts[dealCounter].status,
+                            currentDate: date
+                        };
+                        allParts.push(deal);
                     }
                 }
             }
@@ -192,10 +211,17 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
             date = new Date(parts[dealCounter].date);
             date.setHours(new Date(parts[dealCounter].date).getHours() + dateCounter);
         }
-        console.log('Часть закончила симуляцию');
     }
+    console.log(allParts.length);
     if (parts.length > 0) {
         db.collection('parts').insertMany(parts, (err, result) => {
+            if (err) {
+                //console.log(err)
+            } else {
+                console.log('Части загружены!');
+            }
+        });
+        db.collection('allParts').insertMany(allParts, (err, result) => {
             if (err) {
                 //console.log(err)
             } else {
