@@ -62,7 +62,7 @@ function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, f
 function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, foundStrategy) {
     let incomeBTC = 0;
     let allParts = [];
-    for(let dealCounter = 0; dealCounter < parts.length; dealCounter++){
+    for (let dealCounter = 0; dealCounter < parts.length; dealCounter++) {
         console.log(dealCounter);
         console.log(parts[dealCounter]);
         let dateCounter = 0;
@@ -71,16 +71,14 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
         while (parts[dealCounter].status !== 'Завершена' && date < new Date()) {
             date = date.toISOString();
             parts[dealCounter].days = (dateCounter % 24 === 0) ? parts[dealCounter].days + 1 : parts[dealCounter].days;
+            try {
+                var res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/' + parts[dealCounter].coin + '/BTC?time=' + date, {
+                    headers: {
+                        'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
+                    },
+                });
+                let result = JSON.parse(res.getBody());
 
-            var res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/' + parts[dealCounter].coin + '/BTC?time=' + date, {
-                headers: {
-                    'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
-                },
-            });
-            let result = JSON.parse(res.getBody());
-            if (result.error) {
-                console.log(result.error);
-            } else {
                 let rate = result.rate;
                 let currentPrice = rate;
                 if (parts[dealCounter].maxPrice < currentPrice) {
@@ -88,31 +86,27 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                 }
                 parts[dealCounter].currentPrice = currentPrice;
                 let coin = partBudget / parts[dealCounter].inputPrice;
-                res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/BTC/' + parts[dealCounter].coin + '?time=' + date, {
-                    headers: {
-                        'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
-                    },
-                });
-                result = JSON.parse(res.getBody());
-                if (result.error) {
-                    console.log(result.error);
-                } else {
+                try {
+                    res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/BTC/' + parts[dealCounter].coin + '?time=' + date, {
+                        headers: {
+                            'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
+                        },
+                    });
+                    result = JSON.parse(res.getBody());
                     rate = result.rate;
                     console.log(dealCounter);
                     console.log(parts[dealCounter]);
                     parts[dealCounter].incomeBTC = coin / rate - partBudget;
                     let income = parts[dealCounter].incomeBTC * 100 / partBudget;
                     parts[dealCounter].currentIncome = income;
+                    try {
+                        res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?time=' + date, {
+                            headers: {
+                                'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
+                            },
+                        });
+                        result = JSON.parse(res.getBody());
 
-                    res = request('GET', 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?time=' + date, {
-                        headers: {
-                            'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
-                        },
-                    });
-                    result = JSON.parse(res.getBody());
-                    if (result.error) {
-                        console.log(result.error);
-                    } else {
                         rate = result.rate;
                         parts[dealCounter].incomeDollars = parts[dealCounter].incomeBTC * rate;
                         let percent = parts[dealCounter].currentIncome;
@@ -120,7 +114,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                             if (percent >= foundStrategy.percentProfit) {
                                 parts[dealCounter].status = 'Завершена';
                                 incomeBTC += parts[dealCounter].incomeBTC;
-                                while((incomeBTC - partBudget) > 0) {
+                                while ((incomeBTC - partBudget) > 0) {
                                     if (dataExcelCounter < parseExcelData.length) {
                                         let coin = parseExcelData[dataExcelCounter][1];
                                         let recommendedValue = parseExcelData[dataExcelCounter][2];
@@ -167,13 +161,13 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                                 parts[dealCounter].status = 'Завершена';
                             }
                         } else {
-                            if(foundStrategy.closeParts){
-                                for(let i = 0; i < foundStrategy.parts.length; i++){
-                                    if(percent >= foundStrategy.parts[i]){
-                                       if(!parts[dealCounter].closedParts.includes(i)){
-                                           parts[dealCounter].closedParts.push(i);
-                                           incomeBTC += (parts[dealCounter].incomeBTC / foundStrategy.parts.length);
-                                       }
+                            if (foundStrategy.closeParts) {
+                                for (let i = 0; i < foundStrategy.parts.length; i++) {
+                                    if (percent >= foundStrategy.parts[i]) {
+                                        if (!parts[dealCounter].closedParts.includes(i)) {
+                                            parts[dealCounter].closedParts.push(i);
+                                            incomeBTC += (parts[dealCounter].incomeBTC / foundStrategy.parts.length);
+                                        }
                                     }
                                 }
                                 let closed = parts[dealCounter].closedParts.length;
@@ -181,7 +175,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                             } else {
                                 if (Math.abs(percent) >= foundStrategy.percentClose) {
                                     parts[dealCounter].status = 'Завершена';
-                                    if(percent > 0){
+                                    if (percent > 0) {
                                         incomeBTC += parts[dealCounter].incomeBTC;
                                     }
                                 }
@@ -204,8 +198,14 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                             currentDate: date
                         };
                         allParts.push(deal);
+                    } catch (e) {
+                        console.log(e.message);
                     }
+                } catch (e) {
+                    console.log(e.message);
                 }
+            } catch (e) {
+                console.log(e.message);
             }
             dateCounter += 6;
             date = new Date(parts[dealCounter].date);
@@ -231,7 +231,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
     }
 }
 
-module.exports = function (db, newDeal) {
+module.exports =  function (db, newDeal) {
     const strategy = {'name': newDeal.strategy};
     console.log(strategy);
     db.collection('strategies').findOne(strategy)

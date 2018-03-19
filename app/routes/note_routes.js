@@ -39,7 +39,9 @@ module.exports = function (app, db, upload) {
             if (err) {
                 res.send({'message': err});
             } else {
+
                 require('../bot')(db, result.ops[0]);
+
                 res.send({'message': 'Сделка загружена!'});
             }
         });
