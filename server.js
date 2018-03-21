@@ -21,7 +21,7 @@ const upload          = multer({storage: storage,
                                 }});
 const app             = express();
 
-const port = process.env.PORT;
+const port = 8000;
 app.use(bodyParser.json());
 app.use(cors());
 MongoClient.connect(db.url, (err, database) =>{

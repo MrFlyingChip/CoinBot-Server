@@ -326,7 +326,6 @@ function simulatePart(parts, allParts, foundStrategy, dealCounter, parseExcelDat
 
 module.exports =  function (db, newDeal) {
     const strategy = {'name': newDeal.strategy};
-    console.log(strategy);
     db.collection('strategies').findOne(strategy)
         .then(foundStrategy => {
                 console.log(foundStrategy);
