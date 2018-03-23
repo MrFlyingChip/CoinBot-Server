@@ -39,9 +39,9 @@ module.exports = function (app, db, upload) {
             if (err) {
                 res.send({'message': err});
             } else {
-
-                require('../bot')(db, result.ops[0]);
-
+                setTimeout(function() {
+                    require('../bot')(db, result.ops[0]);
+                }, 5 * 1000);
                 res.send({'message': 'Сделка загружена!'});
             }
         });
