@@ -11,7 +11,9 @@ var options = {
 
 var parseDate = function (date) {
     let splitDate = date.split('.');
-    return (new Date(splitDate[2], splitDate[1] - 1, splitDate[0], 0, 0, 0)).toISOString();
+    let date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0], 0, 0, 0);
+        date.setHours(date.getHours() + 2);
+    return date.toISOString();
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
