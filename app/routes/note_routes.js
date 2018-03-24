@@ -90,13 +90,13 @@ module.exports = function (app, db, upload) {
     });
 
     app.post('/571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8', (req, res) => {
-        console.log(req.body);
-        let userID = {user: null};
+        let userID = {user: req.body.message.chat.id};
                 db.collection('users').insert(userID, (err, result) => {
                     if (err) {
                         res.send({'message': err});
                     } else {
-                        res.send({'message': 'Файл загружен!'});
+                        console.log(result);
+
                     }
                 });
 
