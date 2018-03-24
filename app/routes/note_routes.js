@@ -93,10 +93,9 @@ module.exports = function (app, db, upload) {
         let userID = {user: req.body.message.chat.id};
                 db.collection('users').insert(userID, (err, result) => {
                     if (err) {
-                        res.send({'message': err});
+                        console.log(err);
                     } else {
                         console.log(result);
-
                     }
                 });
 
