@@ -23,6 +23,7 @@ function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, f
             for(let i = 0; i < docs.length; i++){
                 //bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
                 var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Симуляция_началась!');
+                console.log(res.getBody());
             }
 
         }
