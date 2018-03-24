@@ -91,6 +91,10 @@ module.exports = function (app, db, upload) {
 
     app.post('/571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8', (req, res) => {
         let userID = {user: req.body.message.chat.id};
+        db.collection('users').findOne(userID, (err, item) => {
+            if (item) {
+                console.log('Not new user.');
+            } else {
                 db.collection('users').insert(userID, (err, result) => {
                     if (err) {
                         console.log(err);
@@ -98,8 +102,8 @@ module.exports = function (app, db, upload) {
                         console.log(result);
                     }
                 });
-
-
+            }
+        });
     });
 
     app.get('/coins', (req, res) => {

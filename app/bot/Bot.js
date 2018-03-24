@@ -21,12 +21,15 @@ var parseDate = function (date) {
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
-    bot.on('message', function (msg) {
-        var chatId = msg.chat.id;
-        console.log(msg);
-        bot.sendMessage(chatId, "Hello!", {caption: "I'm a bot!"});
-    });
+    db.collection('users').find().toArray((err, docs) => {
+        if (err) console.log({'error': err});
+        else {
+            for(let i = 0; i < docs.length; i++){
+                bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
+            }
 
+        }
+    });
     while (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
         let coin = parseExcelData[dataExcelCounter][1];
         let recommendedValue = parseExcelData[dataExcelCounter][2];
@@ -280,6 +283,15 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                 //console.log(err)
             } else {
                 console.log('Части загружены!');
+            }
+        });
+        db.collection('users').find().toArray((err, docs) => {
+            if (err) console.log({'error': err});
+            else {
+                for(let i = 0; i < docs.length; i++){
+                    bot.sendMessage(docs[i].user, "Симуляция закончена!", {caption: "I'm a bot!"});
+                }
+
             }
         });
     }
