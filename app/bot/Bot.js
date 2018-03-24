@@ -211,7 +211,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
             date.setHours(new Date(parts[dealCounter].date).getHours() + dateCounter);
         }
         let newPartCreated = false;
-        if(parts[dealCounter].status === 'Завершена'){
+        if (parts[dealCounter].status === 'Завершена') {
             while (!newPartCreated) {
                 if (dataExcelCounter < parseExcelData.length) {
                     let coin = parseExcelData[dataExcelCounter][1];
@@ -276,9 +276,27 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
         db.collection('users').find().toArray((err, docs) => {
             if (err) console.log({'error': err});
             else {
-                for(let i = 0; i < docs.length; i++){
+                let profitParts = 0;
+                let minusParts = 0;
+                let waitParts = 0;
+                let percentProfit = 0;
+                let profit = 0;
+                let price = partBudget * foundStrategy.partsNumber;
+                for(let j = 0; j < parts.length; j++){
+                    profit += parts[j].incomeBTC;
+                    if(parts[j].status === 'Завершена'){
+                        if(parts[j].incomeBTC >= 0) profitParts++;
+                        else minusParts++;
+                    }
+                    else{
+                        waitParts++;
+                    }
+                }
+                let percent = profit * 100 / price;
+                percentProfit = percent.toFixed(2);
+                for (let i = 0; i < docs.length; i++) {
                     //bot.sendMessage(docs[i].user, "Симуляция закончена!", {caption: "I'm a bot!"});
-                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!');
+                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit);
                 }
 
             }
@@ -286,7 +304,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
     }
 }
 
-module.exports =  function (db, newDeal) {
+module.exports = function (db, newDeal) {
     const strategy = {'name': newDeal.strategy};
     console.log(strategy);
     db.collection('strategies').findOne(strategy)
@@ -303,7 +321,7 @@ module.exports =  function (db, newDeal) {
                         db.collection('users').find().toArray((err, docs) => {
                             if (err) console.log({'error': err});
                             else {
-                                for(let i = 0; i < docs.length; i++){
+                                for (let i = 0; i < docs.length; i++) {
                                     //bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
                                     var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation started!');
 
