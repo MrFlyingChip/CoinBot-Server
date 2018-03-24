@@ -17,17 +17,7 @@ var parseDate = function (date) {
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
-    db.collection('users').find().toArray((err, docs) => {
-        if (err) console.log({'error': err});
-        else {
-            for(let i = 0; i < docs.length; i++){
-                //bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
-                var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Симуляция_началась!');
-                console.log(res.getBody());
-            }
 
-        }
-    });
     while (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
         let coin = parseExcelData[dataExcelCounter][1];
         let recommendedValue = parseExcelData[dataExcelCounter][2];
@@ -288,7 +278,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
             else {
                 for(let i = 0; i < docs.length; i++){
                     //bot.sendMessage(docs[i].user, "Симуляция закончена!", {caption: "I'm a bot!"});
-                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Симуляция_закончена!');
+                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!');
                 }
 
             }
@@ -310,7 +300,18 @@ module.exports =  function (db, newDeal) {
                         let dealCounter = 0;
                         let dataExcelCounter = 1;
                         let partBudget = newDeal.budget / foundStrategy.partsNumber;
-                        createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, deals);
+                        db.collection('users').find().toArray((err, docs) => {
+                            if (err) console.log({'error': err});
+                            else {
+                                for(let i = 0; i < docs.length; i++){
+                                    //bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
+                                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation started!');
+
+                                }
+                                createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, deals);
+                            }
+                        });
+
                         //console.log(deals);
                     }
                 });
