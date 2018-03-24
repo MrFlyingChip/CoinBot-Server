@@ -2,10 +2,6 @@ const parseXlsx = require('excel');
 const https = require('https');
 var request = require('sync-request');
 
-var TelegramBot = require('node-telegram-bot-api');
-var token = '571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8';
-var bot = new TelegramBot(token, {polling: true});
-
 var options = {
     "method": "GET",
     "hostname": "rest.coinapi.io",
