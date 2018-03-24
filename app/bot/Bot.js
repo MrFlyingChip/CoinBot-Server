@@ -2,6 +2,10 @@ const parseXlsx = require('excel');
 const https = require('https');
 var request = require('sync-request');
 
+var TelegramBot = require('node-telegram-bot-api');
+var token = '571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8';
+var bot = new TelegramBot(token, {polling: true});
+
 var options = {
     "method": "GET",
     "hostname": "rest.coinapi.io",
@@ -11,12 +15,18 @@ var options = {
 
 var parseDate = function (date) {
     let splitDate = date.split('.');
-    let date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0], 0, 0, 0);
-        date.setHours(date.getHours() + 2);
-    return date.toISOString();
+    let data = new Date(splitDate[2], splitDate[1] - 1, splitDate[0], 0, 0, 0);
+    data.setHours(data.getHours() + 2);
+    return data.toISOString();
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
+    bot.on('message', function (msg) {
+        var chatId = msg.chat.id;
+        console.log(msg);
+        bot.sendMessage(chatId, "Hello!", {caption: "I'm a bot!"});
+    });
+
     while (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
         let coin = parseExcelData[dataExcelCounter][1];
         let recommendedValue = parseExcelData[dataExcelCounter][2];
