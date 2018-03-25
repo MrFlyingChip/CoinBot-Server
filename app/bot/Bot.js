@@ -17,8 +17,11 @@ var parseDate = function (date) {
 };
 
 function createPart(parseExcelData, dealCounter, dataExcelCounter, partBudget, foundStrategy, db, parts) {
-
     while (dealCounter < foundStrategy.partsNumber && dataExcelCounter < parseExcelData.length) {
+        if(parseExcelData[dataExcelCounter][0] === ''){
+            break;
+        }
+
         let coin = parseExcelData[dataExcelCounter][1];
         let recommendedValue = parseExcelData[dataExcelCounter][2];
         let date = parseDate(parseExcelData[dataExcelCounter][0]);
@@ -115,6 +118,10 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                                 incomeBTC += parts[dealCounter].incomeBTC;
                                 while ((incomeBTC - partBudget) > 0) {
                                     if (dataExcelCounter < parseExcelData.length) {
+                                        if(parseExcelData[dataExcelCounter][0] === ''){
+                                            console.log('end of file');
+                                            break;
+                                        }
                                         let coin = parseExcelData[dataExcelCounter][1];
                                         let recommendedValue = parseExcelData[dataExcelCounter][2];
                                         let date = parseDate(parseExcelData[dataExcelCounter][0]);
@@ -214,6 +221,10 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
         if (parts[dealCounter].status === 'Завершена') {
             while (!newPartCreated) {
                 if (dataExcelCounter < parseExcelData.length) {
+                    if(parseExcelData[dataExcelCounter][0] === ''){
+                        console.log('end of file');
+                        break;
+                    }
                     let coin = parseExcelData[dataExcelCounter][1];
                     let recommendedValue = parseExcelData[dataExcelCounter][2];
                     let date = parseDate(parseExcelData[dataExcelCounter][0]);
@@ -296,7 +307,7 @@ function simulateCoin(parseExcelData, dataExcelCounter, partBudget, parts, db, f
                 percentProfit = percent.toFixed(2);
                 for (let i = 0; i < docs.length; i++) {
                     //bot.sendMessage(docs[i].user, "Симуляция закончена!", {caption: "I'm a bot!"});
-                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit);
+                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit + '%');
                 }
 
             }
