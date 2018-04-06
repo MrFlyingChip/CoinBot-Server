@@ -1,4 +1,5 @@
 module.exports = function (app, db, upload) {
+
     app.post('/strategy', (req, res) => {
         let result = req.body;
         const strategy = {

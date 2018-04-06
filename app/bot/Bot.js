@@ -1,13 +1,7 @@
 const parseXlsx = require('excel');
 const https = require('https');
 var request = require('sync-request');
-
-var options = {
-    "method": "GET",
-    "hostname": "rest.coinapi.io",
-    "path": "/v1/exchangerate/",
-    "headers": {'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075'}
-};
+const api = require('../config/config.js');
 
 var parseDate = function (date) {
     let splitDate = date.split('.');
@@ -40,7 +34,7 @@ function simulateCoin(parseExcelData, partBudget, parts, db, foundStrategy) {
             try {
                 var res = request('GET', 'https://rest.coinapi.io/v1/ohlcv/BITTREX_SPOT_' + parts[dealCounter].coin + '_BTC/history?period_id=1DAY&time_start=' + date, {
                     headers: {
-                        'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
+                        'X-CoinAPI-Key': api.apiCoin,
                     },
                 });
                 let result = JSON.parse(res.getBody());
@@ -58,7 +52,7 @@ function simulateCoin(parseExcelData, partBudget, parts, db, foundStrategy) {
                 try {
                     res = request('GET', 'https://rest.coinapi.io/v1/ohlcv/BINANCE_SPOT_BTC_USDT/history?period_id=1DAY&time_start=' + date, {
                         headers: {
-                            'X-CoinAPI-Key': '76C22A1B-32F2-45CD-A2B5-AEA08A067075',
+                            'X-CoinAPI-Key': api.apiCoin,
                         },
                     });
                     result = JSON.parse(res.getBody());
@@ -173,7 +167,7 @@ function simulateCoin(parseExcelData, partBudget, parts, db, foundStrategy) {
                 let percent = profit * 100 / price;
                 percentProfit = percent.toFixed(2);
                 for (let i = 0; i < docs.length; i++) {
-                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit + '%');
+                    var res = request('GET', api.apiBot + 'sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit + '%');
                 }
 
             }
@@ -242,7 +236,7 @@ module.exports = function (db, newDeal) {
                             else {
                                 for (let i = 0; i < docs.length; i++) {
                                     //bot.sendMessage(docs[i].user, "Симуляция началась!", {caption: "I'm a bot!"});
-                                    var res = request('GET', 'https://api.telegram.org/bot571455368:AAF65ScR2kTNEvt9rLqRSrH5N3roZaR6sC8/sendMessage?chat_id=' + docs[i].user + '&text=Simulation started!');
+                                    var res = request('GET', api.apiBot + 'sendMessage?chat_id=' + docs[i].user + '&text=Simulation started!');
 
                                 }
                                 let excelData = [];
