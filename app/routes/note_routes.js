@@ -235,11 +235,11 @@ module.exports = function (app, db, upload) {
                                     if (parts[i + 1] === undefined
                                         || parts[i + 1].coin !== parts[i].coin
                                         || (parts[i + 1].coin === parts[i].coin && new Date(parts[i + 1].currentDate) > new Date(dateFinish))) {
-                                            parts[i].inputPrice = parseFloat(parts[i].inputPrice.toFixed(10));
-                                        parts[i].budget = parseFloat([i].budget.toFixed(5));
-                                        parts[i].currentIncome = parseFloat(parts[i].currentIncome.toFixed(1));
-                                        parts[i].incomeBTC = parseFloat(parts[i].incomeBTC.toFixed(5));
-                                        parts[i].incomeDollars = parseFloat(parts[i].incomeDollars.toFixed(1));
+                                            parts[i].inputPrice = parseFloat(parts[i].inputPrice).toFixed(10);
+                                        parts[i].budget = parseFloat(parts[i].budget).toFixed(5);
+                                        parts[i].currentIncome = parseFloat(parts[i].currentIncome).toFixed(1);
+                                        parts[i].incomeBTC = parseFloat(parts[i].incomeBTC).toFixed(5);
+                                        parts[i].incomeDollars = parseFloat(parts[i].incomeDollars).toFixed(1);
                                             result.push(parts[i]);
 
                                     }
