@@ -151,23 +151,29 @@ function simulateCoin(parseExcelData, partBudget, parts, db, foundStrategy) {
                 let profitParts = 0;
                 let minusParts = 0;
                 let waitParts = 0;
+                let errorParts = 0;
                 let percentProfit = 0;
                 let profit = 0;
-                let price = partBudget * foundStrategy.partsNumber;
+                let price = 0;
                 for (let j = 0; j < parts.length; j++) {
-                    profit += parts[j].incomeBTC;
-                    if (parts[j].status === 'Завершена') {
-                        if (parts[j].incomeBTC >= 0) profitParts++;
-                        else minusParts++;
-                    }
-                    else {
-                        waitParts++;
+                    if(parts[j].status === 'Ошибка'){
+                        errorParts++;
+                    }else{
+                        profit += parts[j].incomeBTC;
+                        price += parts[j].budget;
+                        if (parts[j].status === 'Завершена') {
+                            if (parts[j].incomeBTC >= 0) profitParts++;
+                            else minusParts++;
+                        }
+                        else {
+                            waitParts++;
+                        }
                     }
                 }
                 let percent = profit * 100 / price;
                 percentProfit = percent.toFixed(2);
                 for (let i = 0; i < docs.length; i++) {
-                    var res = request('GET', api.apiBot + 'sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit + '%');
+                    var res = request('GET', api.apiBot + 'sendMessage?chat_id=' + docs[i].user + '&text=Simulation ended!\nSuccessful deals: ' + profitParts + '\nUnsuccessful deals: ' + minusParts + '\nDeals pending: ' + waitParts + '\nProfit: ' + percentProfit + '%\nError parts: ' + errorParts);
                 }
 
             }
