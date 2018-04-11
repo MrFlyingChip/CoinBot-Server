@@ -67,8 +67,8 @@
       <file leaf-file-name="note_routes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="233" column="19" lean-forward="false" selection-start-line="233" selection-start-column="19" selection-end-line="233" selection-end-column="19" />
+            <state relative-caret-position="120">
+              <caret line="241" column="110" lean-forward="false" selection-start-line="241" selection-start-column="110" selection-end-line="241" selection-end-column="110" />
               <folding />
             </state>
           </provider>
@@ -119,7 +119,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="28" />
     <option name="width" value="1346" />
     <option name="height" value="688" />
@@ -211,15 +211,15 @@
       <workItem from="1521650796304" duration="6748000" />
       <workItem from="1521910131459" duration="10327000" />
       <workItem from="1522136312721" duration="8124000" />
-      <workItem from="1523466291639" duration="633000" />
+      <workItem from="1523466291639" duration="905000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="211131000" />
+    <option name="totallyTimeSpent" value="211403000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24304539" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -655,8 +655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="233" column="19" lean-forward="false" selection-start-line="233" selection-start-column="19" selection-end-line="233" selection-end-column="19" />
+        <state relative-caret-position="120">
+          <caret line="241" column="110" lean-forward="false" selection-start-line="241" selection-start-column="110" selection-end-line="241" selection-end-column="110" />
           <folding />
         </state>
       </provider>
