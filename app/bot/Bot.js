@@ -152,13 +152,13 @@ function simulateCoin(parseExcelData, partBudget, parts, db, foundStrategy) {
                 let minusParts = 0;
                 let waitParts = 0;
                 let errorParts = 0;
-                let percentProfit = 0;
+                let percentProfit;
                 let profit = 0;
                 let price = 0;
                 for (let j = 0; j < parts.length; j++) {
-                    if(parts[j].status === 'Ошибка'){
+                    if (parts[j].status === 'Ошибка') {
                         errorParts++;
-                    }else{
+                    } else {
                         profit += parts[j].incomeBTC;
                         price += parts[j].budget;
                         if (parts[j].status === 'Завершена') {
@@ -204,7 +204,7 @@ function inputNewDeal(part, parts, date, strategyName, partBudget) {
 
 }
 
-function currentDeal (deal, date) {
+function currentDeal(deal, date) {
     return {
         strategy: deal.strategy,
         coin: deal.coin,

@@ -27,8 +27,18 @@
       <file leaf-file-name="Bot.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/bot/Bot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="177" column="0" lean-forward="true" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
+            <state relative-caret-position="2788">
+              <caret line="164" column="38" lean-forward="false" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/config/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="48" lean-forward="false" selection-start-line="1" selection-start-column="48" selection-end-line="1" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -64,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="note_routes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="note_routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="241" column="131" lean-forward="false" selection-start-line="241" selection-start-column="131" selection-end-line="241" selection-end-column="131" />
+            <state relative-caret-position="205">
+              <caret line="242" column="57" lean-forward="true" selection-start-line="242" selection-start-column="57" selection-end-line="242" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -105,8 +115,9 @@
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/readMe.md" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/app/bot/Bot.js" />
         <option value="$PROJECT_DIR$/app/routes/note_routes.js" />
+        <option value="$PROJECT_DIR$/app/bot/Bot.js" />
+        <option value="$PROJECT_DIR$/app/config/config.js" />
       </list>
     </option>
   </component>
@@ -146,6 +157,17 @@
             <path>
               <item name="CoinBot-Server" type="b2602c69:ProjectViewProjectNode" />
               <item name="CoinBot-Server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CoinBot-Server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CoinBot-Server" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CoinBot-Server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CoinBot-Server" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CoinBot-Server" type="b2602c69:ProjectViewProjectNode" />
@@ -211,12 +233,12 @@
       <workItem from="1521650796304" duration="6748000" />
       <workItem from="1521910131459" duration="10327000" />
       <workItem from="1522136312721" duration="8124000" />
-      <workItem from="1523466291639" duration="1623000" />
+      <workItem from="1523466291639" duration="2552000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="212121000" />
+    <option name="totallyTimeSpent" value="213050000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -254,14 +276,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="2" lean-forward="false" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3723">
@@ -645,18 +659,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/bot/Bot.js">
+    <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="177" column="0" lean-forward="true" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
+        <state relative-caret-position="205">
+          <caret line="242" column="57" lean-forward="true" selection-start-line="242" selection-start-column="57" selection-end-line="242" selection-end-column="57" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes/note_routes.js">
+    <entry file="file://$PROJECT_DIR$/app/bot/Bot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="241" column="131" lean-forward="false" selection-start-line="241" selection-start-column="131" selection-end-line="241" selection-end-column="131" />
+        <state relative-caret-position="2788">
+          <caret line="164" column="38" lean-forward="false" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="48" lean-forward="false" selection-start-line="1" selection-start-column="48" selection-end-line="1" selection-end-column="48" />
           <folding />
         </state>
       </provider>
